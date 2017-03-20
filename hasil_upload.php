@@ -3,6 +3,7 @@
 include('class.pdf2text.php');
 include_once 'IDNstemmer.php';
 include('Enhanced_CS.php');
+
 function preproses($teks,$nama_file) { 
   //bersihkan tanda baca, ganti dengan space 
 $teks = str_replace("'", " ", $teks);
@@ -45,12 +46,14 @@ foreach($filteredarray as $filteredarray){
 if (strlen($filteredarray) >=4)
 	  {
 echo ">>".$filteredarray;
+$tgl_upload = date("Ymd");
 $hasil=$st->doStemming($filteredarray);
+$hasil2=Enhanced_CS($filteredarray);
 //$st->doStemming($filteredarray)
-	   echo " ".$hasil.'<br>';
+	   echo " ".$hasil." ".$hasil2.'<br>';
 	   
-	   $query = "INSERT INTO dokumen (nama_file, token, tokenstem)
-            VALUES('$nama_file', '$filteredarray', '$hasil')";
+	   $query = "INSERT INTO dokumen (nama_file, token, tokenstem, tokenstem2, tgl_upload)
+            VALUES('$nama_file', '$filteredarray', '$hasil', '$hasil2', '$tgl_upload')";
              mysqli_query($konek, $query);
 	  }
 	  
